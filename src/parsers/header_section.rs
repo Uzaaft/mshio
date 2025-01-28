@@ -15,15 +15,15 @@ use crate::parsers::num_parser_traits::{ParsesFloat, ParsesInt, ParsesSizeT};
 use crate::parsers::num_parsers;
 use crate::parsers::{br, sp, verify_or};
 
-pub(crate) fn parse_header_section<'a>(
-    input: &'a [u8],
+pub(crate) fn parse_header_section(
+    input: &[u8],
 ) -> IResult<
-    &'a [u8],
+    &[u8],
     (
         MshHeader,
         impl ParsesSizeT<u64> + ParsesInt<i32> + ParsesFloat<f64>,
     ),
-    MshParserError<&'a [u8]>,
+    MshParserError<&[u8]>,
 > {
     // TODO: Replace this expect
     let from_u8 =
@@ -84,8 +84,8 @@ pub(crate) fn parse_header_section<'a>(
     Ok((input, (header, parsers)))
 }
 
-pub(crate) fn num_parsers_from_header<'a, U: MshUsizeT, I: MshIntT, F: MshFloatT>(
-    header: &'a MshHeader,
+pub(crate) fn num_parsers_from_header<U: MshUsizeT, I: MshIntT, F: MshFloatT>(
+    header: &MshHeader,
 ) -> impl ParsesSizeT<U> + ParsesInt<I> + ParsesFloat<F> {
     let size_t_parser = num_parsers::uint_parser::<U>(header.size_t_size, header.endianness);
     let int_parser = num_parsers::int_parser::<I>(header.int_size, header.endianness);

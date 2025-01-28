@@ -219,16 +219,16 @@ impl<I: Debug + HexDisplay + ?Sized> Display for MshParserError<&I> {
         // Remove all internal nom errors
         let backtrace = self.filtered_backtrace();
         if backtrace.len() > 1 {
-            write!(f, "During parsing...\n")?;
+            writeln!(f, "During parsing...")?;
             for (_, ek) in backtrace[1..].iter().rev() {
                 if let Some(c) = ek.context() {
-                    write!(f, "\tin {},\n", c)?;
+                    writeln!(f, "\tin {},", c)?;
                 } else {
-                    write!(f, "\tin {},\n", ek)?;
+                    writeln!(f, "\tin {},", ek)?;
                 }
             }
             write!(f, "an error occurred: ")?;
-            write!(f, "{}\n", backtrace[0].1)?;
+            writeln!(f, "{}", backtrace[0].1)?;
             write!(
                 f,
                 "Hex dump of the file at the error location:\n{}",
@@ -241,7 +241,7 @@ impl<I: Debug + HexDisplay + ?Sized> Display for MshParserError<&I> {
             write!(f, "{}", backtrace[0].1)?;
             Ok(())
         } else {
-            write!(f, "Unknown error occurred\n")
+            writeln!(f, "Unknown error occurred")
         }
     }
 }

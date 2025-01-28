@@ -37,10 +37,10 @@
 //! such an inconsistency). In the future, utility functions may be added to check this.
 //!
 //! Although the `MshFile` struct and all related structs are generic over their value types,
-//! the `parse_msh_bytes` function enforces the usage of `u64`, `i32` and `f64` as output value types 
+//! the `parse_msh_bytes` function enforces the usage of `u64`, `i32` and `f64` as output value types
 //! corresponding to the MSH input value types `size_t`, `int` and `double`
 //! (of course `size_t` values will still be parsed as having the size specified in the file header).
-//! We did not encounter MSH files using different types (e.g. 64 bit integers or 32 bit floats) and therefore cannot test it. 
+//! We did not encounter MSH files using different types (e.g. 64 bit integers or 32 bit floats) and therefore cannot test it.
 //! In addition, the MSH format specification does not specify the size of the float and integer types.
 //! If the user desires narrowing conversions, they should be performed manually after parsing the file.
 //!
@@ -116,15 +116,15 @@ impl<'a> TryFrom<&'a [u8]> for MshFile<u64, i32, f64> {
 /// Try to parse a [`MshFile`](mshfile/struct.MshFile.html) from a slice of bytes
 ///
 /// The input can be the content of an ASCII or binary encoded MSH file of file format version 4.1.
-pub fn parse_msh_bytes<'a>(
-    input: &'a [u8],
-) -> Result<MshFile<u64, i32, f64>, MshParserError<&'a [u8]>> {
+pub fn parse_msh_bytes(
+    input: &[u8],
+) -> Result<MshFile<u64, i32, f64>, MshParserError<&[u8]>> {
     input.try_into()
 }
 
-fn private_parse_msh_bytes<'a>(
-    input: &'a [u8],
-) -> IResult<&'a [u8], MshFile<u64, i32, f64>, MshParserError<&'a [u8]>> {
+fn private_parse_msh_bytes(
+    input: &[u8],
+) -> IResult<&[u8], MshFile<u64, i32, f64>, MshParserError<&[u8]>> {
     let (input, (header, parsers)) = context(
         "MSH file header section",
         parsers::parse_delimited_block(
@@ -157,7 +157,7 @@ fn private_parse_msh_bytes<'a>(
     let mut input = input;
 
     // Loop over all sections of the mesh file
-    while !parsers::eof::<_, ()>(input).is_ok() {
+    while parsers::eof::<_, ()>(input).is_err() {
         // Check for entity section
         if section_detected("$Entities", input) {
             let (input_, entities) = parse_section!(

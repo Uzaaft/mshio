@@ -3,7 +3,7 @@ use std::fs;
 use std::path::Path;
 
 /// Relative path to the directory containing the test mesh data
-static TEST_DATA_DIR: &'static str = "tests/data";
+static TEST_DATA_DIR: &str = "tests/data";
 
 /// Reads a whole test mesh file from the data directory as a vector of bytes
 fn read_to_bytes<P: AsRef<Path>>(filename: P) -> Vec<u8> {

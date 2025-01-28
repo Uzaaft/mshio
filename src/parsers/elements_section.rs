@@ -35,11 +35,7 @@ pub(crate) fn parse_element_section<'a, 'b: 'a>(
             max_element_tag,
         } = element_section_header;
 
-        let sparse_tags = if max_element_tag - min_element_tag > num_elements - 1 {
-            true
-        } else {
-            false
-        };
+        let sparse_tags = max_element_tag - min_element_tag > num_elements - 1;
 
         // Parse the individual element entity blocks
         let (input, element_entity_blocks) = count_indexed(
@@ -68,10 +64,10 @@ pub(crate) fn parse_element_section<'a, 'b: 'a>(
     }
 }
 
-fn parse_element_section_header<'a, U: MshUsizeT>(
+fn parse_element_section_header<U: MshUsizeT>(
     parser: impl ParsesSizeT<U>,
-    input: &'a [u8],
-) -> IResult<&'a [u8], ElementSectionHeader<U>, MshParserError<&'a [u8]>> {
+    input: &[u8],
+) -> IResult<&[u8], ElementSectionHeader<U>, MshParserError<&[u8]>> {
     let size_t_parser = size_t_parser(&parser);
     let usize_parser = usize_parser(&parser);
 
@@ -112,11 +108,11 @@ fn parse_element_section_header<'a, U: MshUsizeT>(
     ))
 }
 
-fn parse_element_entity<'a, U, I>(
+fn parse_element_entity<U, I>(
     parser: impl ParsesSizeT<U> + ParsesInt<I>,
     sparse_tags: bool,
-    input: &'a [u8],
-) -> IResult<&'a [u8], ElementBlock<U, I>, MshParserError<&'a [u8]>>
+    input: &[u8],
+) -> IResult<&[u8], ElementBlock<U, I>, MshParserError<&[u8]>>
 where
     U: MshUsizeT,
     I: MshIntT,
@@ -143,7 +139,7 @@ where
     // Parse every element definition
     let (input, elements) = count_indexed(
         |index, input| {
-            parse_element(&parser, num_nodes_per_element, input)
+            parse_element(parser, num_nodes_per_element, input)
                 .with_error(input, MshParserErrorKind::InvalidElementDefinition)
                 .with_context_from(input, || {
                     format!(
@@ -162,7 +158,7 @@ where
             elements
                 .iter()
                 .enumerate()
-                .map(|(i, ele)| (ele.element_tag.clone(), i))
+                .map(|(i, ele)| (ele.element_tag, i))
                 .collect::<HashMap<_, _>>(),
         )
     } else {
@@ -181,10 +177,10 @@ where
     ))
 }
 
-fn parse_element_type<'a, I>(
+fn parse_element_type<I>(
     parser: impl ParsesInt<I>,
-    input: &'a [u8],
-) -> IResult<&'a [u8], ElementType, MshParserError<&'a [u8]>>
+    input: &[u8],
+) -> IResult<&[u8], ElementType, MshParserError<&[u8]>>
 where
     I: MshIntT,
 {
@@ -205,11 +201,11 @@ where
     Ok((input_new, element_type))
 }
 
-fn parse_element<'a, U>(
+fn parse_element<U>(
     parser: impl ParsesSizeT<U>,
     num_nodes_per_element: usize,
-    input: &'a [u8],
-) -> IResult<&'a [u8], Element<U>, MshParserError<&'a [u8]>>
+    input: &[u8],
+) -> IResult<&[u8], Element<U>, MshParserError<&[u8]>>
 where
     U: MshUsizeT,
 {

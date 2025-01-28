@@ -74,10 +74,10 @@ pub(crate) fn parse_entity_section<'a, 'b: 'a>(
     }
 }
 
-fn parse_entity_section_header<'a, U: MshUsizeT>(
+fn parse_entity_section_header<U: MshUsizeT>(
     parser: impl ParsesSizeT<U>,
-    input: &'a [u8],
-) -> IResult<&'a [u8], EntitySectionHeader, MshParserError<&'a [u8]>> {
+    input: &[u8],
+) -> IResult<&[u8], EntitySectionHeader, MshParserError<&[u8]>> {
     let usize_parser = usize_parser(&parser);
 
     let (input, num_points) = context("number of point entities", &usize_parser)(input)?;
@@ -96,10 +96,10 @@ fn parse_entity_section_header<'a, U: MshUsizeT>(
     ))
 }
 
-fn parse_point<'a, U: MshUsizeT, I: MshIntT, F: MshFloatT>(
+fn parse_point<U: MshUsizeT, I: MshIntT, F: MshFloatT>(
     parser: impl ParsesSizeT<U> + ParsesInt<I> + ParsesFloat<F>,
-    input: &'a [u8],
-) -> IResult<&'a [u8], Point<I, F>, MshParserError<&'a [u8]>> {
+    input: &[u8],
+) -> IResult<&[u8], Point<I, F>, MshParserError<&[u8]>> {
     let usize_parser = usize_parser(&parser);
     let int_parser = int_parser(&parser);
     let float_parser = float_parser(&parser);
@@ -140,10 +140,10 @@ fn parse_point<'a, U: MshUsizeT, I: MshIntT, F: MshFloatT>(
 
 macro_rules! single_entity_parser {
     ($parser_name:ident, $entity_type:ident, $entity_name:ident, $bounding_entity_name:ident, $bounding_entity_field:ident) => {
-        fn $parser_name<'a, U: MshUsizeT, I: MshIntT, F: MshFloatT>(
+        fn $parser_name<U: MshUsizeT, I: MshIntT, F: MshFloatT>(
             parser: impl ParsesSizeT<U> + ParsesInt<I> + ParsesFloat<F>,
-            input: &'a [u8],
-        ) -> IResult<&'a [u8], $entity_type<I, F>, MshParserError<&'a [u8]>> {
+            input: &[u8],
+        ) -> IResult<&[u8], $entity_type<I, F>, MshParserError<&[u8]>> {
             let usize_parser = usize_parser(&parser);
             let int_parser = int_parser(&parser);
             let float_parser = float_parser(&parser);

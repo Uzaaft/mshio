@@ -71,11 +71,11 @@ pub fn uint_parser<T: Unsigned + Integer + NumCast + str::FromStr>(
 
     match endianness {
         Some(Endianness::Little) => match source_size {
-            1 => return generate_parser!(numbers::le_u8),
-            2 => return generate_parser!(numbers::le_u16),
-            4 => return generate_parser!(numbers::le_u32),
-            8 => return generate_parser!(numbers::le_u64),
-            16 => return generate_parser!(numbers::le_u128),
+            1 => generate_parser!(numbers::le_u8),
+            2 => generate_parser!(numbers::le_u16),
+            4 => generate_parser!(numbers::le_u32),
+            8 => generate_parser!(numbers::le_u64),
+            16 => generate_parser!(numbers::le_u128),
             _ => {
                 unimplemented!(
                     "No parser for input unsigned integer size of {} bytes available",
@@ -84,11 +84,11 @@ pub fn uint_parser<T: Unsigned + Integer + NumCast + str::FromStr>(
             }
         },
         Some(Endianness::Big) => match source_size {
-            1 => return generate_parser!(numbers::be_u8),
-            2 => return generate_parser!(numbers::be_u16),
-            4 => return generate_parser!(numbers::be_u32),
-            8 => return generate_parser!(numbers::be_u64),
-            16 => return generate_parser!(numbers::be_u128),
+            1 => generate_parser!(numbers::be_u8),
+            2 => generate_parser!(numbers::be_u16),
+            4 => generate_parser!(numbers::be_u32),
+            8 => generate_parser!(numbers::be_u64),
+            16 => generate_parser!(numbers::be_u128),
             _ => {
                 unimplemented!(
                     "No parser for input unsigned integer size of {} bytes available",
@@ -135,11 +135,11 @@ pub fn int_parser<T: Signed + Integer + NumCast + str::FromStr>(
 
     match endianness {
         Some(Endianness::Little) => match source_size {
-            1 => return generate_parser!(numbers::le_i8),
-            2 => return generate_parser!(numbers::le_i16),
-            4 => return generate_parser!(numbers::le_i32),
-            8 => return generate_parser!(numbers::le_i64),
-            16 => return generate_parser!(numbers::le_i128),
+            1 => generate_parser!(numbers::le_i8),
+            2 => generate_parser!(numbers::le_i16),
+            4 => generate_parser!(numbers::le_i32),
+            8 => generate_parser!(numbers::le_i64),
+            16 => generate_parser!(numbers::le_i128),
             _ => {
                 unimplemented!(
                     "No parser for input integer size of {} bytes available",
@@ -148,11 +148,11 @@ pub fn int_parser<T: Signed + Integer + NumCast + str::FromStr>(
             }
         },
         Some(Endianness::Big) => match source_size {
-            1 => return generate_parser!(numbers::be_i8),
-            2 => return generate_parser!(numbers::be_i16),
-            4 => return generate_parser!(numbers::be_i32),
-            8 => return generate_parser!(numbers::be_i64),
-            16 => return generate_parser!(numbers::be_i128),
+            1 => generate_parser!(numbers::be_i8),
+            2 => generate_parser!(numbers::be_i16),
+            4 => generate_parser!(numbers::be_i32),
+            8 => generate_parser!(numbers::be_i64),
+            16 => generate_parser!(numbers::be_i128),
             _ => {
                 unimplemented!(
                     "No parser for source integer size of {} bytes available",
@@ -197,8 +197,8 @@ pub fn float_parser<T: Float + NumCast>(
 
     match endianness {
         Some(Endianness::Little) => match source_size {
-            4 => return generate_parser!(numbers::le_f32),
-            8 => return generate_parser!(numbers::le_f64),
+            4 => generate_parser!(numbers::le_f32),
+            8 => generate_parser!(numbers::le_f64),
             _ => {
                 unimplemented!(
                     "No parser for input float size of {} bytes available",
@@ -207,8 +207,8 @@ pub fn float_parser<T: Float + NumCast>(
             }
         },
         Some(Endianness::Big) => match source_size {
-            4 => return generate_parser!(numbers::be_f32),
-            8 => return generate_parser!(numbers::be_f64),
+            4 => generate_parser!(numbers::be_f32),
+            8 => generate_parser!(numbers::be_f64),
             _ => {
                 unimplemented!(
                     "No parser for input float size of {} bytes available",

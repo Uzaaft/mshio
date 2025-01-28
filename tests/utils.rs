@@ -5,7 +5,7 @@ use std::path::Path;
 use mshio::MshParserError;
 
 /// Relative path to the directory containing the test mesh data
-static TEST_DATA_DIR: &'static str = "tests/data";
+static TEST_DATA_DIR: &str = "tests/data";
 
 /// Reads a whole test mesh file from the data directory as a vector of bytes
 pub fn read_test_mesh<P: AsRef<Path>>(filename: P) -> Vec<u8> {

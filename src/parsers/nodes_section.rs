@@ -36,11 +36,7 @@ pub(crate) fn parse_node_section<'a, 'b: 'a>(
             max_node_tag,
         } = node_section_header;
 
-        let sparse_tags = if max_node_tag - min_node_tag > num_nodes - 1 {
-            true
-        } else {
-            false
-        };
+        let sparse_tags = max_node_tag - min_node_tag > num_nodes - 1;
 
         // Parse the individual node entity blocks
         let (input, node_entity_blocks) = count_indexed(
@@ -64,10 +60,10 @@ pub(crate) fn parse_node_section<'a, 'b: 'a>(
     }
 }
 
-fn parse_node_section_header<'a, U: MshUsizeT>(
+fn parse_node_section_header<U: MshUsizeT>(
     parser: impl ParsesSizeT<U>,
-    input: &'a [u8],
-) -> IResult<&'a [u8], NodeSectionHeader<U>, MshParserError<&'a [u8]>> {
+    input: &[u8],
+) -> IResult<&[u8], NodeSectionHeader<U>, MshParserError<&[u8]>> {
     let size_t_parser = size_t_parser(&parser);
     let usize_parser = usize_parser(&parser);
 
@@ -107,11 +103,11 @@ fn parse_node_section_header<'a, U: MshUsizeT>(
     ))
 }
 
-fn parse_node_entity<'a, U: MshUsizeT, I: MshIntT, F: MshFloatT>(
+fn parse_node_entity<U: MshUsizeT, I: MshIntT, F: MshFloatT>(
     parser: impl ParsesSizeT<U> + ParsesInt<I> + ParsesFloat<F>,
     sparse_tags: bool,
-    input: &'a [u8],
-) -> IResult<&'a [u8], NodeBlock<U, I, F>, MshParserError<&'a [u8]>> {
+    input: &[u8],
+) -> IResult<&[u8], NodeBlock<U, I, F>, MshParserError<&[u8]>> {
     let size_t_parser = size_t_parser(&parser);
     let usize_parser = usize_parser(&parser);
     let int_parser = int_parser(&parser);

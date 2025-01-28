@@ -183,7 +183,7 @@ where
         let org_input = input.clone();
         loop {
             if parser(input.clone()).is_ok() {
-                return take(bytes_taken as usize)(org_input);
+                return take(bytes_taken)(org_input);
             }
 
             bytes_taken += 1;
@@ -220,7 +220,7 @@ where
         let org_input = input.clone();
         loop {
             if let Ok((i, t)) = parser(input.clone()) {
-                let (_, c) = take(bytes_taken as usize)(org_input)?;
+                let (_, c) = take(bytes_taken)(org_input)?;
                 return Ok((i, (c, t)));
             }
 
