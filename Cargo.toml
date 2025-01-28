@@ -5,7 +5,7 @@ authors = ["Fabian Löschner"]
 license = "MIT"
 description = "Parser for the Gmsh MSH file format version 4.1"
 readme = "README.md"
-edition = "2018"
+edition = "2021"
 
 homepage = "https://github.com/w1th0utnam3/mshio"
 repository = "https://github.com/w1th0utnam3/mshio"
@@ -15,19 +15,17 @@ categories = ["parser-implementations", "science"]
 keywords = ["gmsh", "msh", "parser", "io", "mesh"]
 
 # Ignore the tests (especially the test mesh files) for publishing
-exclude = [
-    "tests/*",
-]
+exclude = ["tests/*"]
 
 [dependencies]
 nom = "5.1"
-num = "0.3"
-num-traits = "0.2"
-num-derive = "0.3"
-thiserror = "1.0"
+num = "0.4.3"
+num-traits = "0.2.19"
+num-derive = "0.4.2"
+thiserror = "2.0"
 
 [dev-dependencies]
-criterion = "0.3"
+criterion = "0.5.1"
 
 [[bench]]
 name = "mshio_benchmark"
